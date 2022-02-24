@@ -12,15 +12,32 @@ public abstract class Sweets {
         this.price = price;
     }
 
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
 
-    public abstract void setName(String name);
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public abstract int getWeight();
+    public int getWeight() {
+        return weight;
+    }
 
-    public abstract void setWeight(int weight);
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
 
-    public abstract BigDecimal getPrice();
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-    public abstract void setPrice(BigDecimal price);
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public abstract int getUniq();
+
+    public abstract void setUniq(int i);
+
 }
