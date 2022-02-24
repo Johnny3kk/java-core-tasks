@@ -1,12 +1,14 @@
 package box;
 
+import sweeets.Sweets;
+
 import java.math.BigDecimal;
 
 public interface Box {
 
-    void add();
+    void add(Sweets s);
 
-    void remove();
+    void remove(int i);
 
     void removeLast();
 
