@@ -2,32 +2,32 @@ package sweeets;
 
 import java.math.BigDecimal;
 
-public class Marshmallow extends Sweets {
+public class HardCandy extends Sweets{
 
-    private int softness;
+    private int sweetness;
 
-    public Marshmallow(String name, int weight, BigDecimal price, int softness) {
+    public HardCandy(String name, int weight, BigDecimal price, int sweetness) {
         super(name, weight, price);
-        this.softness = softness;
+        this.sweetness = sweetness;
     }
 
     @Override
     public String toString() {
-        return "Marshmallow{" +
+        return "HardCandy{" +
                 "name= " + getName() +
                 ", weight= " + getWeight() +
                 ", price= " + getPrice() +
-                ", softness= " + getUniq() +
+                ", sweetness= " + getUniq() +
                 "}";
     }
 
     @Override
     public int getUniq() {
-        return softness;
+        return sweetness;
     }
 
     @Override
     public void setUniq(int i) {
-        this.softness = i;
+        this.sweetness = i;
     }
 }

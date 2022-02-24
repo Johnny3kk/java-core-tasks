@@ -19,7 +19,7 @@ public class Chocolate extends Sweets {
                 ", weight= " + getWeight() +
                 ", price= " + getPrice() +
                 ", bitterness= " + getUniq() +
-                '}';
+                "}";
     }
 
     @Override
