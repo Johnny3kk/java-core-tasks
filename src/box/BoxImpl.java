@@ -3,7 +3,6 @@ package box;
 import sweeets.Sweets;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +16,16 @@ public class BoxImpl implements Box {
     }
 
     @Override
+    public void addWithIndex(Sweets s, int i) {
+        list.add(i, s);
+    }
+
+    @Override
+    public Sweets getSweetsByIndex(int i) {
+        return list.get(i);
+    }
+
+    @Override
     public void remove(int i) {
         list.remove(i);
     }
@@ -27,7 +36,7 @@ public class BoxImpl implements Box {
     }
 
     @Override
-    public int getWeight() {
+    public int getBoxWeight() {
         int sum = 0;
         for (Sweets s : list) {
             sum = sum + s.getWeight();
@@ -42,6 +51,11 @@ public class BoxImpl implements Box {
             sum = sum.add(s.getPrice());
         }
         return sum;
+    }
+
+    @Override
+    public int getSize() {
+        return list.size();
     }
 
     @Override

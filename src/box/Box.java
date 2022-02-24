@@ -8,13 +8,19 @@ public interface Box {
 
     void add(Sweets s);
 
+    void addWithIndex(Sweets s, int i);
+
+    Sweets getSweetsByIndex(int i);
+
     void remove(int i);
 
     void removeLast();
 
-    int getWeight();
+    int getBoxWeight();
 
     BigDecimal getTotalPrice();
+
+    int getSize();
 
     String getInfo();
 
