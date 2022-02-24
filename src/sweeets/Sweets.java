@@ -1,3 +1,5 @@
+package sweeets;
+
 import java.math.BigDecimal;
 
 public abstract class Sweets {

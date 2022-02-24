@@ -1,3 +1,5 @@
+package box;
+
 import java.math.BigDecimal;
 
 public interface Box {

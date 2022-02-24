@@ -1,3 +1,5 @@
+package sweeets;
+
 import java.math.BigDecimal;
 
 public class Chocolate extends Sweets {
@@ -13,10 +15,10 @@ public class Chocolate extends Sweets {
     @Override
     public String toString() {
         return "Chocolate{" +
-                "name=" + getName() +
-                ", weight='" + getWeight() +
-                ", price=" + getPrice() +
-                ", bitterness=" + getUniq() +
+                "name= " + getName() +
+                ", weight= " + getWeight() +
+                ", price= " + getPrice() +
+                ", bitterness= " + getUniq() +
                 '}';
     }
 
@@ -26,7 +28,7 @@ public class Chocolate extends Sweets {
     }
 
     @Override
-    public void setUniq(int bitterness) {
+    public void setUniq(int i) {
         this.bitterness = bitterness;
     }
 }
