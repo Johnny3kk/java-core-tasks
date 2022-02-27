@@ -1,40 +1,45 @@
 package java2;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
 public class Main {
 
   public static void main(String[] args) throws Exception {
-    // пример пути "src\\java2\\texts\\most_important_text.txt"
-    // пример пути D:\Yandex\most_important_text.txt
 
     System.out.println(
         "Введите абсолютный или относительный (проекта) путь для исследумого текстового файла:");
     List<String> list = new ArrayList<>();
-try{
     Scanner console = new Scanner(System.in);
     String in = console.nextLine();
-    Scanner sc = new Scanner(new File(in));
-    while (sc.hasNext()) {
-      list.addAll(
-          Arrays.asList(
-              sc.nextLine()
-                  .replaceAll("'", " ")
-                  .toLowerCase()
-                  .replaceAll("[^a-z]", " ")
-                  .trim()
-                  .split("\\s+")));
-      if (list.get(list.size() - 1).equals("")) {
-        list.remove(list.size() - 1);
-      }
+    if (in.equals("")) {
+      throw new IOException("Адресная строка не может быть пустой");
     }
-} catch (Exception e) {
-      System.out.println("Пожалуйста внимательнее вводите путь к исследуемому файлу");
-}
 
+    try {
+      Scanner sc = new Scanner(new File(in));
+      while (sc.hasNext()) {
+        list.addAll(
+            Arrays.asList(
+                sc.nextLine()
+                    .replaceAll("'", " ")
+                    .toLowerCase()
+                    .replaceAll("[^a-z]", " ")
+                    .trim()
+                    .split("\\s+")));
+        if (list.get(list.size() - 1).equals("")) {
+          list.remove(list.size() - 1);
+        }
+      }
+      if (list.size() == 0) {
+        throw new Exception("Исследуемый файл не содержит слов");
+      }
+    } catch (IOException e) {
+      System.out.println(
+          "Пожалуйста внимательнее вводите путь к исследуемому файлу, используя защищённый синтаксис с удвоенным обратным слэшэм (\\ \\)");
+      System.out.println(e.getMessage());
+    }
 
     System.out.println(list);
     percentUsingWordsPrintList(list);
