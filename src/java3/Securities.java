@@ -1,6 +1,7 @@
 package java3;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Securities {
 
@@ -49,6 +50,16 @@ public class Securities {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Securities that = (Securities) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(code, that.code) &&
+                Objects.equals(date, that.date);
     }
 
     @Override

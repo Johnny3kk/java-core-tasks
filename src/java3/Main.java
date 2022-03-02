@@ -7,18 +7,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
   public static final String JSON_PATH = "src\\java3\\json\\companies";
-   public static final LocalDate TODAY = LocalDate.now();
-    public static DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    public static DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd.MM,yy");
-    public static DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-    public static DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("dd/MM/yy");
+  public static final LocalDate TODAY = LocalDate.now();
+  public static DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+  public static DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd.MM,yy");
+  public static DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+  public static DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("dd/MM/yy");
 
   public static void main(String[] args) throws Exception {
 
@@ -26,7 +25,6 @@ public class Main {
     Gson gson = new Gson();
     Reader reader = Files.newBufferedReader(Paths.get(JSON_PATH));
     LocalDate today = LocalDate.now();
-
 
     Companies companies = gson.fromJson(reader, Companies.class);
     companies
@@ -38,15 +36,17 @@ public class Main {
                         + " - Дата основания "
                         + LocalDate.parse(c.getFounded(), formatter1).format(formatter4)));
     expiredSecurities(companies.getCompanies());
-    System.out.println("=============================================================================================================================================");
-    System.out.println("1. Для получения информации о компаниях, основанных позже определённой даты, введите запрос в виде:" +
-            " ДД.ММ.ГГГГ; ДД.ММ,ГГ; ДД/ММ/ГГГГ; ДД/ММ/ГГ.\n" +
-            "2. Для вывода информации о ценных бумагах, использующих определённую валюту, введите запрос в виде:" +
-            " EU; USD; RUB");
+    System.out.println(
+        "=============================================================================================================================================");
+    System.out.println(
+        "1. Для получения информации о компаниях, основанных позже определённой даты, введите запрос в виде:"
+            + " ДД.ММ.ГГГГ; ДД.ММ,ГГ; ДД/ММ/ГГГГ; ДД/ММ/ГГ.\n"
+            + "2. Для вывода информации о ценных бумагах, использующих определённую валюту, введите запрос в виде:"
+            + " EU; USD; RUB");
     String in = console.nextLine();
     if (Arrays.stream(in.split("")).anyMatch(s -> s.matches("\\d"))) {
-        companiesFoundedAfterDate(in, companies.getCompanies());
-    } else  securitiesByCurrency(in, companies.getCompanies());
+      companiesFoundedAfterDate(in, companies.getCompanies());
+    } else securitiesByCurrency(in, companies.getCompanies());
   }
 
   public static void expiredSecurities(List<Company> list) {
@@ -60,8 +60,11 @@ public class Main {
                       s ->
                           System.out.print(
                               "{" + s.getCode() + ", " + s.getDate() + ", " + s.getName() + "}, "));
-              System.out.println("количество истёкших ценных бумаг компании = " + c.getSecurities().stream()
-                      .filter(s -> LocalDate.parse(s.getDate(), formatter1).isBefore(TODAY)).count());
+              System.out.println(
+                  "количество истёкших ценных бумаг компании = "
+                      + c.getSecurities().stream()
+                          .filter(s -> LocalDate.parse(s.getDate(), formatter1).isBefore(TODAY))
+                          .count());
             });
   }
 
@@ -69,24 +72,45 @@ public class Main {
     List<String> strings = Arrays.asList(str.split(""));
     DateTimeFormatter formatter;
     if (strings.size() > 8) {
-        if (strings.stream().anyMatch(s -> s.matches("/"))) {
-            formatter = formatter3;
-        } else formatter = formatter1;
+      if (strings.stream().anyMatch(s -> s.matches("/"))) {
+        formatter = formatter3;
+      } else formatter = formatter1;
     } else {
-        if (strings.stream().anyMatch(s -> s.matches("/"))) {
-            formatter = formatter4;
-        } else formatter = formatter2;
+      if (strings.stream().anyMatch(s -> s.matches("/"))) {
+        formatter = formatter4;
+      } else formatter = formatter2;
     }
-    list.stream().filter(c -> LocalDate.parse(c.getFounded(), formatter1).isAfter(LocalDate.parse(str, formatter)))
-            .forEach(c ->
-                    System.out.println(
-                            c.getName()
-                                    + " - Дата основания "
-                                    + LocalDate.parse(c.getFounded(), formatter1).format(formatter4)));
+    list.stream()
+        .filter(
+            c ->
+                LocalDate.parse(c.getFounded(), formatter1)
+                    .isAfter(LocalDate.parse(str, formatter)))
+        .forEach(
+            c ->
+                System.out.println(
+                    c.getName()
+                        + " - Дата основания "
+                        + LocalDate.parse(c.getFounded(), formatter1).format(formatter4)));
   }
 
   public static void securitiesByCurrency(String str, List<Company> list) {
-    System.out.println("Вижу буквы");
-  }
+    List<Securities> formatedSecuritiesList = new ArrayList<>();
+    Map<String, String> map = new HashMap<>();
+    list.forEach(
+        c -> {
+          formatedSecuritiesList.addAll(
+              c.getSecurities().stream()
+                  .filter(s -> s.getCurrency().contains(str))
+                  .collect(Collectors.toList()));
+        });
 
+    formatedSecuritiesList.forEach(
+        s -> {
+          if (!map.containsKey(s.getName())) {
+            map.put(s.getName(), s.getCode());
+          }
+        });
+
+    map.forEach((key, value) -> System.out.println(key + " - code:" + value));
+  }
 }
