@@ -1,6 +1,5 @@
 package java3;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class Securities {
