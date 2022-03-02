@@ -15,9 +15,7 @@ public class Main {
   public static final String JSON_PATH = "src\\java3\\json\\companies";
   public static final LocalDate TODAY = LocalDate.now();
   public static DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-  public static DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd.MM,yy");
-  public static DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-  public static DateTimeFormatter formatter4 = DateTimeFormatter.ofPattern("dd/MM/yy");
+  public static DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd/MM/yy");
 
   public static void main(String[] args) throws Exception {
 
@@ -34,7 +32,7 @@ public class Main {
                 System.out.println(
                     c.getName()
                         + " - Дата основания "
-                        + LocalDate.parse(c.getFounded(), formatter1).format(formatter4)));
+                        + LocalDate.parse(c.getFounded(), formatter1).format(formatter2)));
     expiredSecurities(companies.getCompanies());
     System.out.println(
         "=============================================================================================================================================");
@@ -50,7 +48,7 @@ public class Main {
   }
 
   public static void expiredSecurities(List<Company> list) {
-    list.stream()
+    list
         .forEach(
             c -> {
               System.out.print(c.getName() + " ценные бумаги с истёкшим сроком: ");
@@ -70,27 +68,30 @@ public class Main {
 
   public static void companiesFoundedAfterDate(String str, List<Company> list) {
     List<String> strings = Arrays.asList(str.split(""));
-    DateTimeFormatter formatter;
+    String string;
+
     if (strings.size() > 8) {
-      if (strings.stream().anyMatch(s -> s.matches("/"))) {
-        formatter = formatter3;
-      } else formatter = formatter1;
+        string = str.replaceAll("[^\\d]", ".");
     } else {
-      if (strings.stream().anyMatch(s -> s.matches("/"))) {
-        formatter = formatter4;
-      } else formatter = formatter2;
+      String[] arr = str.split("[^\\d]");
+      StringBuilder sb = new StringBuilder();
+      if (Integer.parseInt(arr[2]) > 70) {
+          string = sb.append(arr[0]).append(".").append(arr[1]).append(".").append("19").append(arr[2]).toString();
+      } else {
+          string = sb.append(arr[0]).append(".").append(arr[1]).append(".").append("20").append(arr[2]).toString();
+      }
     }
     list.stream()
         .filter(
             c ->
                 LocalDate.parse(c.getFounded(), formatter1)
-                    .isAfter(LocalDate.parse(str, formatter)))
+                    .isAfter(LocalDate.parse(string, formatter1)))
         .forEach(
             c ->
                 System.out.println(
                     c.getName()
                         + " - Дата основания "
-                        + LocalDate.parse(c.getFounded(), formatter1).format(formatter4)));
+                        + LocalDate.parse(c.getFounded(), formatter1).format(formatter2)));
   }
 
   public static void securitiesByCurrency(String str, List<Company> list) {
@@ -113,4 +114,5 @@ public class Main {
 
     map.forEach((key, value) -> System.out.println(key + " - code:" + value));
   }
+
 }
