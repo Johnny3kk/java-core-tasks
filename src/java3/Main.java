@@ -88,7 +88,7 @@ public class Main {
       for (int i = 0; i < 2; i++) {
         if (Integer.parseInt(arr[i]) < 10) {
           sb.append(0).append(Integer.parseInt(arr[i])).append(".");
-        }
+        } else sb.append(Integer.parseInt(arr[i])).append(".");
       }
       if (Integer.parseInt(arr[2]) > 69) {
         string = sb.append("19").append(arr[2]).toString();
